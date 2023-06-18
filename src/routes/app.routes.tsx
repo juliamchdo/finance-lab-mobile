@@ -7,6 +7,7 @@ import { NewLancamento } from '../screens/NewLancamento';
 const { Navigator, Screen } = createNativeStackNavigator();
 
 export function AppRoutes(){
+    
     return(
         <Navigator screenOptions={{ headerShown: false }}>
             <Screen name="home" component={Home}/>
