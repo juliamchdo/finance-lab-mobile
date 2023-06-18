@@ -12,7 +12,6 @@ interface ChangedValue{
 }
 
 const DropDown = ({onChangeValue}:ChangedValue) => {
-
   const [value, setValue] = useState('')
 
   //passa o valor do campo para a função recebida como parâmetro

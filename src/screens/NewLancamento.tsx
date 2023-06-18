@@ -18,7 +18,6 @@ export function NewLancamento(){
                 <Text style={styles.title}>NOVO</Text>
                 <Text style={styles.title}>LANÇAMENTO</Text>  
             </View>
-            
 
             <View style={styles.form}>
                 <Text style={styles.label}>Descrição</Text>

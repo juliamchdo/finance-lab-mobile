@@ -36,7 +36,6 @@ export function Card({ item }: Movimentacao) {
                 </Text>
             </View>
             
-
             <TouchableOpacity style={styles.info} >
                 <Feather name="info" size={22} style={styles.infoIcon}/>
             </TouchableOpacity>

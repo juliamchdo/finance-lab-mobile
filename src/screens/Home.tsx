@@ -15,7 +15,7 @@ export function Home(){
     const [loading, setLoading] = useState(true);
     const [total, setTotal] = useState<totalProps>([]);
     const [movimentacoes, setMovimentacoes] = useState([]);
-    
+  
     const {navigate} = useNavigation();
 
     const day = dayjs().date();
