@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
@@ -14,8 +14,11 @@ interface ChangedValue{
 const DropDown = ({onChangeValue}:ChangedValue) => {
   const [value, setValue] = useState('')
 
-  //passa o valor do campo para a função recebida como parâmetro
-  onChangeValue(value)
+  //passa o valor do campo para a função recebida como parâmetro quando o
+  //valor do dropdown é alterado
+  useEffect(() => {
+    onChangeValue(value)
+  }, [value, onChangeValue])
 
   return (
     <Dropdown
@@ -43,10 +46,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: 150,
     marginTop: 12,
-    paddingTop: 10,
+    paddingTop: 6,
     paddingRight: 10,
     paddingLeft: 20,
-    paddingBottom: 10,
+    paddingBottom: 6,
   },
   placeholderStyle: {
     fontSize: 16,

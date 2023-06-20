@@ -121,10 +121,9 @@ export function Home(){
               }
               </ScrollView>
 
-              <TouchableOpacity onPress={() => navigate('new')} activeOpacity={0.7} style={styles.button}>
+              <TouchableOpacity onPress={() => navigate("new")} activeOpacity={0.7} style={styles.button}>
                 <Text style={styles.buttonText}>NOVO LANÇAMENTO</Text>
               </TouchableOpacity>
-              
             </View>
         </View>
     )

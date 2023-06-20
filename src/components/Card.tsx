@@ -2,7 +2,6 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Feather } from '@expo/vector-icons';
 import { useState } from "react";
 import { formatReal } from '../utils/formatReal'
-import { parse } from "react-native-svg";
 
 interface Movimentacao {
     item: {
