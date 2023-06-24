@@ -2,7 +2,7 @@
 
 <h3>Tecnologias usadas</h3>
 <ul>
-  <li>Fastfy</li>
+  <li>Fastify</li>
   <li>Prisma</li>
   <li>Typescript</li>
 </ul>
