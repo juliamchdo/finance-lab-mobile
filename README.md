@@ -13,6 +13,6 @@
 <h3>Execução</h3>
 <pre>
   <code>
-    npm run dev
+    npx expo start
   </code>
 </pre>
