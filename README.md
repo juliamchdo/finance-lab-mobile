@@ -8,4 +8,8 @@
 </ul>
 
 <h3>Execução</h3>
-<p>npm run dev</p>
+<pre>
+  <code>
+    npm run dev
+  </code>
+</pre>
