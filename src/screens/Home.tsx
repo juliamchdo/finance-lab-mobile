@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { api } from "../lib/axios"
 import { formatReal } from '../utils/formatReal'
 import { Loading } from "../components/Loading";
@@ -36,60 +36,61 @@ export function Home(){
         }
     }
 
-    useEffect(() => {
+    //UseFocusEffect para executar a função toda vez que retorna para a tela
+    useFocusEffect(useCallback(() => {
       fecthData();
-        switch (getMonth) {
-          case 'January':
-            setMonth('Janeiro');
-            break;
+      switch (getMonth) {
+        case 'January':
+          setMonth('Janeiro');
+          break;
 
-          case 'February':
-            setMonth('Fevereiro');
-            break;
+        case 'February':
+          setMonth('Fevereiro');
+          break;
 
-          case 'March':
-            setMonth('Março');
-            break;
+        case 'March':
+          setMonth('Março');
+          break;
 
-          case "April":
-            setMonth('Abril');
-            break;
+        case "April":
+          setMonth('Abril');
+          break;
 
-          case "May":
-            setMonth('Maio');
-            break;
-        
-          case "June":
-            setMonth('Junho');
-            break;
+        case "May":
+          setMonth('Maio');
+          break;
+      
+        case "June":
+          setMonth('Junho');
+          break;
 
-          case "July":
-            setMonth("Julho");
-            break;
+        case "July":
+          setMonth("Julho");
+          break;
 
-          case "August":
-            setMonth("Agosto");
-            break;
+        case "August":
+          setMonth("Agosto");
+          break;
 
-          case "September":
-            setMonth("Setembro");
-            break;
+        case "September":
+          setMonth("Setembro");
+          break;
 
-          case "October":
-            setMonth("Setembro");
-            break;
+        case "October":
+          setMonth("Setembro");
+          break;
 
-          case "November":
-            setMonth("Novembro");
-            break;
+        case "November":
+          setMonth("Novembro");
+          break;
 
-          case "December":
-            setMonth("Dezembro");
-            break;
-          default:
-            setMonth(getMonth);
-        }
-      }, [getMonth]);
+        case "December":
+          setMonth("Dezembro");
+          break;
+        default:
+          setMonth(getMonth);
+      }
+    }, [getMonth]));
 
       if(loading){
         return (

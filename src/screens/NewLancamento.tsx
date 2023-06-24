@@ -22,14 +22,16 @@ export function NewLancamento(){
                 return Alert.alert("Novo Lançamento", "Preencha todos os campos.")
             }
 
-            await api.post('/novo-lancamento', {descricao, tipo, valor});
+            let v = valor.replace(",", ".")
+            
+            await api.post('/novo-lancamento', {description: descricao, type: tipo, value: Number(v)});
+            Alert.alert("Novo Lançamento", "Novo lançamento adicionado com sucesso!");
 
             setDescricao("");
             setTipo("");
             setValor("");
-            Alert.alert("Novo Lançamento", "Novo lançamento adicionado com sucesso!");
         } catch (error) {
-            console.log(error);
+            console.debug(error);
             Alert.alert("Ops!", "Não foi possível adicionar um novo lançamento.")
         }
     }
@@ -46,7 +48,7 @@ export function NewLancamento(){
 
             <View style={styles.form}>
                 <Text style={styles.label}>Descrição</Text>
-                <TextInput onChangeText={setDescricao} style={styles.input}/>
+                <TextInput onChangeText={setDescricao} style={styles.input} value={descricao}/>
             </View>
 
             <View style={styles.form}>
@@ -59,7 +61,7 @@ export function NewLancamento(){
                     
                     <View style={{width: 150,marginLeft: 30}}>
                         <Text style={styles.label}>Valor</Text>
-                        <TextInput onChangeText={setValor} style={styles.input}/>
+                        <TextInput onChangeText={setValor} style={styles.input} value={valor}/>
                     </View>                   
                 </View>
 
