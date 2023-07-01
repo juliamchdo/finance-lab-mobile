@@ -44,7 +44,6 @@ export function NewLancamento(){
                 await api.post('/novo-lancamento', {description: descricao, type: tipo, value: Number(v)});
                 Alert.alert("Novo Lançamento", "Novo lançamento adicionado com sucesso!");    
             }
-
             setDescricao("");
             setTipo("");
             setValor("");
