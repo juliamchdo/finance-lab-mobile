@@ -9,9 +9,10 @@ const data = [
 
 interface ChangedValue{
   onChangeValue: (changedValue: string) => void
+  valor: string | undefined
 }
 
-const DropDown = ({onChangeValue}:ChangedValue) => {
+const DropDown = ({onChangeValue, valor}:ChangedValue) => {
   const [value, setValue] = useState('')
 
   //passa o valor do campo para a função recebida como parâmetro quando o
@@ -30,7 +31,7 @@ const DropDown = ({onChangeValue}:ChangedValue) => {
       labelField="label"
       valueField="value"
       placeholder="Selecione"
-      value={value}
+      value={value || valor}
       onChange={item => {
         setValue(item.value);
       }}

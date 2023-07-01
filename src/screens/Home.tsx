@@ -1,22 +1,26 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from "react-native";
 import dayjs from "dayjs";
-import { useCallback, useEffect, useState } from "react";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useCallback, useState } from "react";
+import { NavigationProp, useFocusEffect, useNavigation } from "@react-navigation/native";
 import { api } from "../lib/axios"
 import { formatReal } from '../utils/formatReal'
 import { Loading } from "../components/Loading";
 import { Card } from "../components/Card";
 
-type totalProps = Array<{
-    total: Number
-}>
+//Define as rotas disponíveis na navegação
+type RootStackParamList = {
+  new: { lancamento: {} };
+};
+
+//Define o tipo da propriedade
+type NavigationType = NavigationProp<RootStackParamList, 'new'>;
 
 export function Home(){
     const [loading, setLoading] = useState(true);
-    const [total, setTotal] = useState<totalProps>([]);
+    const [total, setTotal] = useState<number>(0);
     const [movimentacoes, setMovimentacoes] = useState([]);
   
-    const {navigate} = useNavigation();
+    const { navigate } = useNavigation<NavigationType>();
 
     const day = dayjs().date();
     const getMonth = dayjs().format('MMMM');
@@ -32,7 +36,7 @@ export function Home(){
             setMovimentacoes(resumo.data)
             setLoading(false)
         } catch (error) {
-            
+            Alert.alert("Ops!", "Não foi possível carregar os lançamentos.")
         }
     }
 
@@ -118,11 +122,12 @@ export function Home(){
                     return <Card key={i} item={m}/>
                   })
                 :
-                <Text>Não há movimentações existentes</Text>
+                <Text style={styles.subtext}>Não há movimentações existentes</Text>
               }
               </ScrollView>
 
-              <TouchableOpacity onPress={() => navigate("new")} activeOpacity={0.7} style={styles.button}>
+              <TouchableOpacity onPress={() => navigate("new", { lancamento :{ 
+                valor: "", descricao: "", tipo: "", id: "" } })} activeOpacity={0.7} style={styles.button}>
                 <Text style={styles.buttonText}>NOVO LANÇAMENTO</Text>
               </TouchableOpacity>
             </View>
@@ -149,6 +154,12 @@ const styles = StyleSheet.create({
         color: '#FAF7F7',
         marginBottom: 50,
         marginLeft: 100
+    },
+    subtext:{
+      color: "#455A64",
+      fontSize: 16,
+      fontFamily: 'Inter_600SemiBold',
+      marginLeft: 16
     },
     totalContainer:{
       flexDirection: 'column'
