@@ -17,19 +17,20 @@ interface LancamentoProps{
     descricao: String,
     id: String,
     tipo: String,
-    valor: String
+    valor: number
 }
 
 //Define as rotas disponíveis na navegação
 type RootStackParamList = {
     info: { id: String };
-    new: { lancamento: {} };
+    new: { lancamento: {}, edit: Boolean};
 };
 
 //Define o tipo da propriedade
 type NavigationType = NavigationProp<RootStackParamList, 'info', 'new'>;
 
 export function LancamentosInfo() {
+    
     const route = useRoute();
     const [loading, setLoading] = useState(true);
     const [lancamento, setLancamento] = useState<LancamentoProps>();
@@ -37,11 +38,11 @@ export function LancamentosInfo() {
     const { navigate } = useNavigation<NavigationType>();
 
     const dataCadastro = dayjs(lancamento?.date).format("DD/MM/YYYY")
-    
 
     async function fecthData(){
         try {
             const response = await api.get(`/lancamento/${id}`);
+            console.log(response.data)
             setLancamento(response.data)
             setLoading(false)
         } catch (error) {
@@ -80,10 +81,6 @@ export function LancamentosInfo() {
             console.log(error);
             Alert.alert("Ops!", "Não foi possível deletar o lançamento.")
         }
-    }
-
-    function editLancamento(){
-
     }
 
     function handleTipo(tipo: String | undefined){
@@ -141,8 +138,8 @@ export function LancamentosInfo() {
                 </View>
             </View>
 
-            <TouchableOpacity activeOpacity={0.7} onPress={() => navigate("new", { lancamento :{ 
-                valor: lancamento?.valor, descricao: lancamento?.descricao, tipo: lancamento?.tipo, id: lancamento?.id } 
+            <TouchableOpacity activeOpacity={0.7} onPress={() => navigate("new", {edit: true, lancamento :{ 
+                valor: lancamento?.valor, descricao: lancamento?.descricao, tipo: lancamento?.tipo, id: lancamento?.id },
                 })} style={styles.button}>
                     <Text style={styles.buttonText}>EDITAR LANÇAMENTO</Text>
                 </TouchableOpacity>

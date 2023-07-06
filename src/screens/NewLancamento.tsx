@@ -5,48 +5,52 @@ import { BackButton } from "../components/BackButton";
 import { api } from "../lib/axios"
 import DropDown from "../components/Form/DropDown";
 import { useRoute } from "@react-navigation/native";
+import { TextInputMask } from 'react-native-masked-text';
 
 interface Props extends TouchableOpacityProps{
     lancamento: {
-        valor: string,
+        valor: number,
         descricao: string,
-        tipo: string,
+        tipo: string,   
+        date: string,
         id: String
-    }  | undefined
+    }  | undefined,
+
+    edit: Boolean
 }
 
 export function NewLancamento(){
     const [descricao, setDescricao] = useState("");
     const [tipo, setTipo] = useState("");
-    const [valor, setValor] = useState("");
+    const [valor, setValor] = useState(0);
+    const [inputValor, setInputValor] = useState("");
+    const [id, setId] = useState("")
     const route = useRoute();
-    const { lancamento = { valor: valor, descricao: valor, tipo: valor, id: valor } } = route.params as Props;
-   
-    
+    const [edicao, setEdicao] = useState(false)
+    const { lancamento = { valor: valor, descricao: descricao, tipo: tipo, id: id}, edit = edicao } = route.params as Props;
 
     //Recebe o valor do componente DropDown e seta no setTipo
     function handleValueDropDown (value: string) {
       setTipo(value)
     }
 
-    async function createNewLancamento(id : String) {
+    async function createNewLancamento(id : String | number) {
         try {
             if(!descricao.trim() || tipo === null || valor === null){
                 return Alert.alert("Novo Lançamento", "Preencha todos os campos.")
             }
 
-            let v = valor.replace(",", ".")
-            
-            if(id !== null){
-                await api.post('/editar-lancamento', {descricao: descricao, tipo: tipo, valor: Number(v), id: id});
+            if(edit){
+                 await api.post('/editar-lancamento', {
+                    descricao: descricao ? descricao : lancamento.descricao, 
+                    tipo: tipo ? tipo : lancamento.tipo, 
+                    valor: valor ? valor : Number(lancamento.valor), 
+                    id:id});
                 Alert.alert("Lançamento", "Alterações salvas com sucesso!");
             } else {
-                await api.post('/novo-lancamento', {description: descricao, type: tipo, value: Number(v)});
+                await api.post('/novo-lancamento', {descricao: descricao, tipo: tipo, valor: valor});
                 Alert.alert("Novo Lançamento", "Novo lançamento adicionado com sucesso!");    
             }
-            setDescricao("");
-            setTipo("");
-            setValor("");
         } catch (error) {
             console.debug(error);
             Alert.alert("Ops!", "Não foi possível adicionar um novo lançamento.")
@@ -54,10 +58,10 @@ export function NewLancamento(){
     }
 
     useEffect(() => {
+        let v = Number(lancamento?.valor)
         setDescricao(lancamento.descricao);
-        // setTipo(lancamento.tipo);
-        setValor(lancamento.valor)
-        console.log(tipo)
+        setTipo(lancamento.tipo);
+        setInputValor(v.toLocaleString('pt-br', {minimumFractionDigits: 2}));
     }, [])
 
     return(
@@ -75,19 +79,32 @@ export function NewLancamento(){
 
             <View style={styles.form}>
                 <View style={styles.formGroup}>
-                    <View >
+                    <View>
                         <Text style={styles.label}>Tipo</Text>
                         {/* passa como parâmetro uma função */}
-                        <DropDown onChangeValue={handleValueDropDown} valor={tipo}/>
+                        <DropDown onChangeValue={handleValueDropDown} valor={tipo || lancamento.tipo}/>
                     </View>
                     
                     <View style={{width: 150,marginLeft: 30}}>
                         <Text style={styles.label}>Valor</Text>
-                        <TextInput onChangeText={setValor} style={styles.input} value={valor || lancamento.valor}/>
-                    </View>                   
+                    
+                        <TextInputMask 
+                            type={`money`}
+                            style={styles.input}
+                            value={inputValor}
+                            maxLength={18}
+                            onChangeText={value => {
+                                setInputValor(value)
+                                value = value.replace('R$', '');
+                                value = value.replace('.', '');
+                                value = value.replace(",", ".")
+                                setValor(Number(value))
+                            }}
+                        />
+                    </View>                  
                 </View>
 
-                <TouchableOpacity onPress={() => createNewLancamento(lancamento.id)} activeOpacity={0.7} style={styles.button}>
+                <TouchableOpacity onPress={() => createNewLancamento(lancamento?.id)} activeOpacity={0.7} style={styles.button}>
                     <Text style={styles.buttonText}>{lancamento.id ? "SALVAR ALTERAÇÕES" : "ADICIONAR LANÇAMENTO"}</Text>
                 </TouchableOpacity>
             </View>
@@ -103,13 +120,14 @@ const styles = StyleSheet.create({
     },
     header:{
         marginTop: 20,
-        marginBottom: 100
+        marginBottom: 50
     },
     form:{
         marginTop: 10
     },
     formGroup:{
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginBottom: 6
     },
     title:{
         fontSize: 30,

@@ -23,8 +23,7 @@ export function Home(){
     const { navigate } = useNavigation<NavigationType>();
 
     const day = dayjs().date();
-    const getMonth = dayjs().format('MMMM');
-    const [month, setMonth] = useState('');
+    const mes = dayjs().format('MMMM')
 
     async function fecthData() {
         try {
@@ -36,6 +35,7 @@ export function Home(){
             setMovimentacoes(resumo.data)
             setLoading(false)
         } catch (error) {
+          console.log(error)
             Alert.alert("Ops!", "Não foi possível carregar os lançamentos.")
         }
     }
@@ -43,58 +43,7 @@ export function Home(){
     //UseFocusEffect para executar a função toda vez que retorna para a tela
     useFocusEffect(useCallback(() => {
       fecthData();
-      switch (getMonth) {
-        case 'January':
-          setMonth('Janeiro');
-          break;
-
-        case 'February':
-          setMonth('Fevereiro');
-          break;
-
-        case 'March':
-          setMonth('Março');
-          break;
-
-        case "April":
-          setMonth('Abril');
-          break;
-
-        case "May":
-          setMonth('Maio');
-          break;
-      
-        case "June":
-          setMonth('Junho');
-          break;
-
-        case "July":
-          setMonth("Julho");
-          break;
-
-        case "August":
-          setMonth("Agosto");
-          break;
-
-        case "September":
-          setMonth("Setembro");
-          break;
-
-        case "October":
-          setMonth("Setembro");
-          break;
-
-        case "November":
-          setMonth("Novembro");
-          break;
-
-        case "December":
-          setMonth("Dezembro");
-          break;
-        default:
-          setMonth(getMonth);
-      }
-    }, [getMonth]));
+    }, []));
 
       if(loading){
         return (
@@ -105,7 +54,7 @@ export function Home(){
     return(
         <View style={styles.container}>
           <View style={styles.header}>
-            <Text style={styles.text}>{day} de {month}</Text>
+            <Text style={styles.text}>{day} de {mes}</Text>
             <View style={styles.totalContainer}>
               <Text style={[styles.totalText, total > 0 ? styles.positiveText : styles.negativeText]}>
                 R${formatReal(total)}</Text>
