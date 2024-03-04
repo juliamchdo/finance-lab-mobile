@@ -16,3 +16,6 @@
     npx expo start
   </code>
 </pre>
+
+<h3>Observação</h3>
+<p>Para uma melhor execução do projeto, execute em paraleo o seguinte projeto: https://github.com/juliamchdo/finance-lab-server (servidor)</p>
